@@ -5,19 +5,18 @@ export class GildedTros {
 
   private readonly MAX_QUALITY = 50;
   private readonly MIN_QUALITY = 0;
+  private readonly SMELLY_ITEMS = [
+    "Duplicate Code",
+    "Long Methods",
+    "Ugly Variable Names",
+  ];
 
   private updateBackstagePassQuality(item: Item): number {
     let quality = item.quality + 1;
 
-    if (item.sellIn < 11) {
-      quality += 1;
-    }
-    if (item.sellIn < 6) {
-      quality += 1;
-    }
-    if (item.sellIn < 1) {
-      return 0;
-    }
+    if (item.sellIn < 11) quality += 1;
+    if (item.sellIn < 6) quality += 1;
+    if (item.sellIn < 1) return 0;
 
     return Math.min(quality, this.MAX_QUALITY);
   }
@@ -28,7 +27,9 @@ export class GildedTros {
   }
 
   private updateRegularItemQuality(item: Item): number {
-    const decrease = item.sellIn < 0 ? 2 : 1;
+    const isSmelly = this.SMELLY_ITEMS.includes(item.name);
+    const baseDecrease = item.sellIn < 0 ? 2 : 1;
+    const decrease = isSmelly ? baseDecrease * 2 : baseDecrease;
     return Math.max(item.quality - decrease, this.MIN_QUALITY);
   }
 
