@@ -79,4 +79,11 @@ describe("GildedTrosTest", () => {
     app.updateQuality();
     expect(app.items[0].quality).toBe(0);
   });
+
+  test("smelly items degrade twice as fast", () => {
+    const items: Item[] = [new Item("Duplicate Code", 5, 20)];
+    const app: GildedTros = new GildedTros(items);
+    app.updateQuality();
+    expect(app.items[0].quality).toBe(18);
+  });
 });
